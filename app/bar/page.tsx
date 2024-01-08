@@ -1,39 +1,32 @@
-"use client"
+"use client";
 import { useQueryBar } from "@/hooks/useQueryBar";
-import Link from "next/link";
 import React from "react";
-import { Chart } from "react-google-charts";
+import { VictoryBar, VictoryChart, VictoryTheme } from "victory";
 
-export const options = {
-  chart: {
-    title: "Company Performance",
-    subtitle: "Sales, Expenses, and Profit: 2014-2017",
-  },
-};
 
 export default function BarExample() {
+  const { data } = useQueryBar();
 
-  const { data, refetch } = useQueryBar();
 
   return (
-    <>
-      <Chart
-        chartType="Bar"
-        width="100%"
-        height="400px"
+    <VictoryChart
+      theme={VictoryTheme.material}
+      domainPadding={{ x: 15 }}
+      height={200}
+      width={300}
+    >
+      <VictoryBar
+        barRatio={0.8}
+        animate={{
+          duration: 2000,
+          onLoad: { duration: 1000 },
+        }}
+        style={{
+          data: { fill: "#c43a31" },
+        }}
         data={data}
-        options={options}
       />
-      <div className="bg-gray-400 rounded-lg w-20 text-center">
-        <button
-          onClick={() => refetch()}
-        >
-          Atualizar
-        </button>
-      </div>
-      <Link href="/">
-        voltar
-      </Link>
-    </>
+    </VictoryChart>
   );
 }
+
